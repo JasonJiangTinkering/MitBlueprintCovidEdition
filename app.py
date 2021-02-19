@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, abort
+from flask_socketio import SocketIO
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant, ChatGrant
 from twilio.rest import Client
@@ -14,7 +15,16 @@ twilio_client = Client(twilio_api_key_sid, twilio_api_key_secret,
                        twilio_account_sid)
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
+@socketio.on('image')
+def handle_message(data):
+    _data = data #convert to pillow object
+
+@socketio.on('test')
+def handle_test(data):
+    print(data)
 
 def get_chatroom(name):
     for conversation in twilio_client.conversations.conversations.list():
@@ -55,4 +65,5 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1')
+    # app.run(host='127.0.0.1')
+    socketio.run(app, host='127.0.0.1', port=80)

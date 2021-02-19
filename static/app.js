@@ -25,29 +25,54 @@ function addLocalVideo() {
     });
 };
 // create promise loop to take frames
-function asyncOp(resolve, reject) {
-    //If you're using NodeJS you can use Es6 syntax:
-    async_api_call("method.name", {}, (result) => {
-      if(result.error()) {
-          console.error(result.error());
-          reject(result.error()); //You can reject the promise, this is optional.
-      } else {
-          //If your operation succeeds, resolve the promise and don't call again.
-          if (result.data().length === 0) {
-              asyncOp(resolve); //Try again
-          } else {
-              resolve(result); //Resolve the promise, pass the result.
-          }
-      }
-   });
-}
+// function asyncOp(resolve, reject) {
+//     //If you're using NodeJS you can use Es6 syntax:
+//     async_api_call("method.name", {}, (result) => {
+//       if(result.error()) {
+//           console.error(result.error());
+//           reject(result.error()); //You can reject the promise, this is optional.
+//       } else {
+//           //If your operation succeeds, resolve the promise and don't call again.
+//           if (result.data().length === 0) {
+//               asyncOp(resolve); //Try again
+//           } else {
+//               resolve(result); //Resolve the promise, pass the result.
+//           }
+//       }
+//    });
+// }
+
+
+// socket.on('connect', function() {
+//     // take photo and stringify the photo
+//     socket.emit('test', {data: "jasonhasBDE"});
+// });
 
 new Promise((r, j) => {
     asyncOp(r, j);
 }).then((result) => {
     //This will call if your algorithm succeeds!
 });
+function sendPic(data){
+    // var socket = io();
+    // socket.on('connect', function() {
+    //     // take photo and stringify the photo
+    //     socket.emit('image', {data: takePic().stringify});
+    // });
 
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(JSON.stringify({'data' : 'jasontest'}))
+    xhr.onload = function(){
+        console.log("HELLO")
+        console.log(this.responseText);
+        var data = JSON.parse(this.responseText);
+        console.log(data);
+    }       
+
+    // to @socketio.on('image')
+};
 function takePic(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
     //generate pic URL data
@@ -56,6 +81,7 @@ function takePic(i){
     // fix + test parameters later =============================================
     var dataURL = thecanvas.toDataURL();
     console.log(dataURL);
+    return dataURL;
     //create img
     // var img = document.createElement('img');
     // img.setAttribute('src', dataURL);

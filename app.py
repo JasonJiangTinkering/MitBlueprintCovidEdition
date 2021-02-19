@@ -1,4 +1,9 @@
 import os
+import cv2
+import threading
+import pickle
+import socket
+import struct
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, abort
 from twilio.jwt.access_token import AccessToken
@@ -15,6 +20,34 @@ twilio_client = Client(twilio_api_key_sid, twilio_api_key_secret,
 
 app = Flask(__name__)
 
+class Thread (threading.Thread):
+   def __init__(self):
+      threading.Thread.__init__(self)
+   def run(self):
+      stream_cam()
+
+
+def stream_cam():
+    cap = cv2.VideoCapture(0)
+    clientsocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    clientsocket.connect(('localhost',8089))
+
+    while(True):
+        ret,frame=cap.read()
+        # Serialize frame
+        data = pickle.dumps(frame)
+
+        # Send message length first
+        message_size = struct.pack("L", len(data)) ### CHANGED
+
+        # Then data
+        clientsocket.sendall(message_size + data)
+
+    # When everything done, release the capture
+    cap.release()
+    cv2.destroyAllWindows()
+
+
 
 def get_chatroom(name):
     for conversation in twilio_client.conversations.conversations.list():
@@ -28,6 +61,8 @@ def get_chatroom(name):
 
 @app.route('/')
 def index():
+    t = Thread()
+    t.start()
     return render_template('index.html')
 
 

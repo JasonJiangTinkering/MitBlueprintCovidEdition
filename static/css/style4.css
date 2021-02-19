@@ -1,0 +1,58 @@
+em {
+  font-style: bold;
+  text-align: center;
+  margin: 30px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+h3 {
+  font-style: bold;
+  text-align: center;
+  margin: 30px;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 50px;
+}
+h2 {
+  font-style: bold;
+  text-align: center;
+  margin: 30px;
+}
+h5 {
+  text-align: center;
+  margin: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+p {
+  text-align: justify;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+table {
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+a {
+  text-align: left;
+}
+
+p {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+summary {
+  text-align: right;
+  margin-left: 50px;
+  font-size: 8px;
+}

@@ -19,10 +19,49 @@ function addLocalVideo() {
         let video = document.getElementById('local').firstChild;
         let trackElement = track.attach();
         trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
+        // event listeners to capture frames every interval from the user's video feed
+
         video.appendChild(trackElement);
     });
 };
+// create promise loop to take frames
+function asyncOp(resolve, reject) {
+    //If you're using NodeJS you can use Es6 syntax:
+    async_api_call("method.name", {}, (result) => {
+      if(result.error()) {
+          console.error(result.error());
+          reject(result.error()); //You can reject the promise, this is optional.
+      } else {
+          //If your operation succeeds, resolve the promise and don't call again.
+          if (result.data().length === 0) {
+              asyncOp(resolve); //Try again
+          } else {
+              resolve(result); //Resolve the promise, pass the result.
+          }
+      }
+   });
+}
 
+new Promise((r, j) => {
+    asyncOp(r, j);
+}).then((result) => {
+    //This will call if your algorithm succeeds!
+});
+
+function takePic(i){
+    // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
+    //generate pic URL data
+    var context = thecanvas.getContext('2d');
+    context.drawImage(this, 0, 0, this.videoWidth, this.videoHeight);
+    // fix + test parameters later =============================================
+    var dataURL = thecanvas.toDataURL();
+    console.log(dataURL);
+    //create img
+    // var img = document.createElement('img');
+    // img.setAttribute('src', dataURL);
+
+
+}
 function connectButtonHandler(event) {
     event.preventDefault();
     if (!connected) {

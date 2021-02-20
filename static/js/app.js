@@ -103,10 +103,8 @@ function sendPics(go){
 };
 function setstatus(msg){
     for (i of msg){ //per user  
-        
-        for(x of i){
-
-        }
+        labeldivs = document.getElementById(i[0])
+        labeldivs.innerHTML = i[1]
     }
 }
 function takePics(i){

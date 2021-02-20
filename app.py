@@ -31,10 +31,11 @@ def get_chatroom(name):
 def index():
     if request.method == "POST":
         d = request.form.to_dict()
-        print(d)
-        username = request.form['username']
-        print("The email address is '" + username + "'")
-        return render_template('call.html', username=username)
+        username = d['username']
+        if username:
+            return render_template('call.html', username=username)
+        else:
+            return redirect('/')
     else:
         return render_template('index.html')
 

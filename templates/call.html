@@ -8,7 +8,6 @@
         <link href="img/favicon.ico" rel="shortcut icon">
         <!-- Links and CSS Imports -->
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css"') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
@@ -36,7 +35,9 @@
         </header>
         <div>
                 <p id="count">Disconnected.</p>
+                <p id = "username">{{username}}</p>
                 <form>
+                    <button id="join_leave">Leave call</button>
                     <button id="share_screen">Share screen</button>
                     <button id="toggle_chat">Toggle chat</button>
                 </form>
@@ -60,7 +61,6 @@
         <script src="{{ url_for('static', filename='js/app.js') }}"></script>
         <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/init-round.js') }}"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>

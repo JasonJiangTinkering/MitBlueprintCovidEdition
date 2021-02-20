@@ -108,7 +108,7 @@ function takePics(i){
     for (var i=0, max=list.length; i < max; i++) {
         w = list[i].videoWidth;
         h = list[i].videoHeight;
-        var canvas = document.getElementById('canvas');  
+        var canvas = document.createElement('canvas');  
         canvas.width  = w;
         canvas.height = h;
         var context = canvas.getContext('2d');
@@ -129,6 +129,7 @@ function takePics(i){
 }
 function connectButtonHandler(event) {
     event.preventDefault();
+}
 function connectButtonHandler(){
     if (!connected) {
         let username = usernameInput.innerHTML;

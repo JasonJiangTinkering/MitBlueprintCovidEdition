@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, redirect
 from flask_socketio import SocketIO, emit
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant, ChatGrant
@@ -9,6 +9,7 @@ from twilio.base.exceptions import TwilioRestException
 import base64
 from PIL import Image
 from io import BytesIO
+
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.

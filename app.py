@@ -36,14 +36,16 @@ def handle_message(received_data, methods=['GET', 'POST']):
     # text_file.close()
     data = eval(data)
     x = 0
+    mydict = {}
     for i in data:
         # print("Image" + str(x) + ": " + i)
-        person_id = i[0]
-        print(person_id)
+        
+        # print(person_id)
         throw, throw, hold = i[1].partition(',')
         # data is the base 64 image
         try:
             im = Image.open(BytesIO(base64.b64decode(hold)))
+            mydict[i[0]] = im
         except UnidentifiedImageError:
             print(hold)
         im.save('image' + str(x) + '.png', 'PNG')

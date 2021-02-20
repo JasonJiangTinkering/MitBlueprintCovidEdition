@@ -116,7 +116,7 @@ function takePics(i){
         var context = canvas.getContext('2d');
         context.drawImage(list[i], 0, 0, w, h);
         var dataURL = canvas.toDataURL();
-        console.log(dataURL);
+        // console.log(dataURL);
         
         person.push(names[i].innerHTML);
         person.push(dataURL);

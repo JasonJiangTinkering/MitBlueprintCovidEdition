@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+    <head>
+        <title>Floom | Home</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="img/favicon.ico" rel="shortcut icon">
+        <!-- Links and CSS Imports -->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/sum.css') }}">
+    </head>
+    <body>
+        <header class="header-section">
+            <div class="logo">
+                <img src="img/logo.png" alt="" width=300>
+            </div>
+            <div class="responsive">
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <ul class="menu-list">
+                <li class="current">
+                    <a href="#home">Connect</a>
+                </li>
+                <li class="">
+                    <a href="">About</a>
+                </li>
+            </ul>
+        </header>
+        <div>
+                <p id="count">Disconnected.</p>
+                <p id = "username">{{username}}</p>
+                <form action = "/call" method = "POST">
+                    <button id="join_leave" type = "submit">Leave call</button>
+                    <button id="share_screen">Share screen</button>
+                    <button id="toggle_chat">Toggle chat</button>
+                </form>
+                <div id="root">
+                    <div id="container" class="container">
+                        <div id="local" class="participant"><div></div><div class="label">{{username}}</div></div>
+                        <!-- more participants will be added dynamically here -->
+                    </div>
+                    <div id="chat">
+                        <div id="chat-scroll">
+                            <div id="chat-content">
+                                <!-- chat content will be added dynamically here -->
+                            </div>
+                        </div>
+                        <input id="chat-input" type="text">
+                    </div>
+                </div>
+        </div>
+        <script src="https://media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+        <script src="https://media.twiliocdn.com/sdk/js/conversations/releases/1.0.0/twilio-conversations.min.js"></script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 const root = document.getElementById('root');
 const usernameInput = document.getElementById('username');
-const button = document.getElementById('join_leave');
+const button = document.getElementById('join_leave')
 const shareScreen = document.getElementById('share_screen');
 const toggleChat = document.getElementById('toggle_chat');
 const container = document.getElementById('container');
@@ -129,27 +129,17 @@ function takePics(i){
 }
 function connectButtonHandler(event) {
     event.preventDefault();
+function connectButtonHandler(){
     if (!connected) {
-        let username = usernameInput.value;
-        if (!username) {
-            alert('Enter your name before connecting');
-            return;
-        }
-        button.disabled = true;
-        button.innerHTML = 'Connecting...';
+        let username = usernameInput.innerHTML;
         connect(username).then(() => {
-            button.innerHTML = 'Leave call';
-            button.disabled = false;
             shareScreen.disabled = false;
         }).catch(() => {
             alert('Connection failed. Is the backend running?');
-            button.innerHTML = 'Join call';
-            button.disabled = false;
         });
     }
     else {
         disconnect();
-        button.innerHTML = 'Join call';
         connected = false;
         shareScreen.innerHTML = 'Share screen';
         shareScreen.disabled = true;
@@ -358,6 +348,7 @@ function onChatInputKey(ev) {
 };
 
 addLocalVideo();
+connectButtonHandler();
 button.addEventListener('click', connectButtonHandler);
 shareScreen.addEventListener('click', shareScreenHandler);
 toggleChat.addEventListener('click', toggleChatHandler);

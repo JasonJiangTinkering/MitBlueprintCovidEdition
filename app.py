@@ -24,6 +24,7 @@ twilio_client = Client(twilio_api_key_sid, twilio_api_key_secret,
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @socketio.on('image')
 def handle_message(received_data, methods=['GET', 'POST']):
@@ -56,29 +57,28 @@ def get_chatroom(name):
         friendly_name=name)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods = ["POST", "GET"])
 def index():
     if request.method == "POST":
-        data = request.form["data"]
-        data = eval(data)
-        x = 0
-        for i in data:
-            # print("Image" + str(x) + ": " + i)
-            throw, throw, i = i.partition(',')
-            # data is the base 64 image
-            import base64
-            from PIL import Image
-            from io import BytesIO
-            im = Image.open(BytesIO(base64.b64decode(i)))
-            im.save('image' + str(x) + '.png', 'PNG')
-            x += 1
-        return render_template('index.html', async_mode=socketio.async_mode)
-    
+        d = request.form.to_dict()
+        username = d['username']
+        if username:
+            return render_template('call.html', username=username)
+        else:
+            return redirect('/')
     else:
-        return render_template('index.html', async_mode=socketio.async_mode)
-    
-    
-    
+        return render_template('index.html')
+
+@app.route('/call', methods = ["POST", "GET"])
+def call():
+    if request.method == 'POST':
+        return redirect('/thanks')
+    else:
+        return redirect('/')
+
+@app.route('/thanks')
+def thanks():
+    return render_template('thanks.html')
 
 
 @app.route('/login', methods=['POST'])

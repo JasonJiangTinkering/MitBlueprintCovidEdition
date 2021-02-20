@@ -103,14 +103,14 @@ function sendPics(go){
         }, 200)} // time until get next frame
     })
 };
-function setstatus(msg){
-    for (i of msg){ //per user  
+// function setstatus(msg){
+//     for (i of msg){ //per user  
         
-        for(x of i){
-
-        }
-    }
-}
+//         for(x of i){
+         
+//         }
+//     }
+// }
 function takePics(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
     //generate pic URL data
@@ -365,6 +365,36 @@ function onChatInputKey(ev) {
         chatInput.value = '';
     }
 };
+const togglexmute = document.getElementById('toggle-mute');
+togglexmute.on('click', () => {
+    if (this.getAttribute('_go') == 't'){
+        this.setAttribute('_go', 'f');
+        room.localParticipant.audioTracks.forEach(track => {
+            track.disable();
+          });
+    }
+    else{
+        this.setAttribute('_go', 't');
+        room.localParticipant.audioTracks.forEach(track => {
+            track.enable();
+          });
+    }
+})
+const togglexvideo = document.getElementById('toggle-video');
+togglexvideo.on('click', () => {
+    if (this.getAttribute('_go') == 't'){
+        this.setAttribute('_go', 'f');
+        room.localParticipant.videoTracks.forEach(track => {
+            track.disable();
+          });
+    }
+    else{
+        this.setAttribute('_go', 't');
+        room.localParticipant.videoTracks.forEach(track => {
+            track.enable();
+          });
+    }
+})
 
 addLocalVideo();
 connectButtonHandler();
@@ -372,3 +402,4 @@ button.addEventListener('click', connectButtonHandler);
 shareScreen.addEventListener('click', shareScreenHandler);
 toggleChat.addEventListener('click', toggleChatHandler);
 chatInput.addEventListener('keyup', onChatInputKey);
+

@@ -93,3 +93,6 @@ html, body {
     line-height: 1em;
     max-height: 1px;
 }
+.hide{
+    display: none;
+}

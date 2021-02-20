@@ -52,10 +52,11 @@ function addLocalVideo() {
 function sendPics(go){
     return new Promise ((resolve, reject) => {
         console.log("does video work? :" + go);
-        if (go){
+        if (!go){
+            console.log("retrying");
             setTimeout(() => {resolve()}, 5000)
             // set a 1 sec timer before testing if video works again
-            console.log("retrying");
+            
         }
         else{
             setTimeout(() => {
@@ -70,7 +71,8 @@ function sendPics(go){
             console.log(formData);
             xhr.onload = function(){
                 if (xhr.status === 200){
-                    alert('Good')
+                    // alert('Good')
+                    resolve();
                 }
                 else {
                     alert('Request failed')
@@ -83,7 +85,7 @@ function sendPics(go){
             // var data = JSON.parse(this.responseText);
             console.log(data);
             // return true;   
-            resolve();
+            
         }, 1000)}
         
     })

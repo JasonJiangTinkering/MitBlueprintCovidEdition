@@ -1,10 +1,18 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, abort
+from flask_socketio import SocketIO, emit
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant, ChatGrant
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
+import base64
+from PIL import Image
+from io import BytesIO
+# Set this variable to "threading", "eventlet" or "gevent" to test the
+# different async modes, or leave it set to None for the application to choose
+# the best option based on installed packages.
+async_mode = None
 
 load_dotenv()
 twilio_account_sid = "AC574e31283298bd9c08801be42875d2a7"
@@ -14,7 +22,29 @@ twilio_client = Client(twilio_api_key_sid, twilio_api_key_secret,
                        twilio_account_sid)
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, async_mode=async_mode)
 
+@socketio.on('image')
+def handle_message(received_data, methods=['GET', 'POST']):
+    data = received_data["data"]
+    #=== testing input ===
+    text_file = open("Output.txt", "w+")
+    text_file.write(data)
+    text_file.close()
+    data = eval(data) 
+    x = 0
+    for i in data:
+        # print("Image" + str(x) + ": " + i)
+        throw, throw, i = i.partition(',')
+        # data is the base 64 image
+        try:
+            im = Image.open(BytesIO(base64.b64decode(i)))
+        except UnidentifiedImageError:
+            print(i)
+        im.save('image' + str(x) + '.png', 'PNG')
+        x += 1
+    emit('my response', {'data': 'got it!'})
 
 def get_chatroom(name):
     for conversation in twilio_client.conversations.conversations.list():
@@ -26,9 +56,29 @@ def get_chatroom(name):
         friendly_name=name)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    if request.method == "POST":
+        data = request.form["data"]
+        data = eval(data)
+        x = 0
+        for i in data:
+            # print("Image" + str(x) + ": " + i)
+            throw, throw, i = i.partition(',')
+            # data is the base 64 image
+            import base64
+            from PIL import Image
+            from io import BytesIO
+            im = Image.open(BytesIO(base64.b64decode(i)))
+            im.save('image' + str(x) + '.png', 'PNG')
+            x += 1
+        return render_template('index.html', async_mode=socketio.async_mode)
+    
+    else:
+        return render_template('index.html', async_mode=socketio.async_mode)
+    
+    
+    
 
 
 @app.route('/login', methods=['POST'])
@@ -55,4 +105,5 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1')
+    # app.run(host='127.0.0.1')
+    socketio.run(app, host='127.0.0.1', port=80)

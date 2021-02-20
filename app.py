@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, redirect
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant, ChatGrant
 from twilio.rest import Client
@@ -14,6 +14,7 @@ twilio_client = Client(twilio_api_key_sid, twilio_api_key_secret,
                        twilio_account_sid)
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 def get_chatroom(name):
@@ -26,9 +27,20 @@ def get_chatroom(name):
         friendly_name=name)
 
 
-@app.route('/')
+@app.route('/', methods = ["POST", "GET"])
 def index():
-    return render_template('index.html')
+    if request.method == "POST":
+        d = request.form.to_dict()
+        print(d)
+        username = request.form['username']
+        print("The email address is '" + username + "'")
+        return render_template('call.html', username=username)
+    else:
+        return render_template('index.html')
+
+@app.route('/call')
+def call():
+    return redirect('/')
 
 
 @app.route('/login', methods=['POST'])

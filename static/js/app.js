@@ -1,6 +1,4 @@
 const root = document.getElementById('root');
-const usernameInput = document.getElementById('username');
-const button = document.getElementById('join_leave');
 const shareScreen = document.getElementById('share_screen');
 const toggleChat = document.getElementById('toggle_chat');
 const container = document.getElementById('container');
@@ -254,7 +252,7 @@ function onChatInputKey(ev) {
 };
 
 addLocalVideo();
-button.addEventListener('click', connectButtonHandler);
+connectButtonHandler(event);
 shareScreen.addEventListener('click', shareScreenHandler);
 toggleChat.addEventListener('click', toggleChatHandler);
 chatInput.addEventListener('keyup', onChatInputKey);

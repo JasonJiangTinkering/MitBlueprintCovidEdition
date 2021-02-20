@@ -14,6 +14,17 @@ let chat;
 let conv;
 let screenTrack;
 
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+socket.on('connect', function() {
+    socket.emit( 'my event', {
+        data: 'User Connected'
+      } )
+    })
+
+
+
+
+
 function addLocalVideo() {
     Twilio.Video.createLocalVideoTrack().then(track => {
         let video = document.getElementById('local').firstChild;
@@ -23,6 +34,7 @@ function addLocalVideo() {
         
         video.appendChild(trackElement);
 
+        // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
             return sendPics(track.isStarted)
             .then(resolver);
@@ -44,11 +56,7 @@ function addLocalVideo() {
 
 // console.log('jasonTest');
 // sendPic("jasonTest");
-// var socket = io();
-    // socket.on('connect', function() {
-    //     // take photo and stringify the photo
-    //     socket.emit('image', {data: takePic().stringify});
-    // });
+
 function sendPics(go){
     return new Promise ((resolve, reject) => {
         console.log("does video work? :" + go);
@@ -61,35 +69,34 @@ function sendPics(go){
         else{
             setTimeout(() => {
             console.log("sending");
-            var formData = new FormData();
             data = takePics()
-            formData.append("data", JSON.stringify(data));
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", '/', true);
+            //  ====== using post request  ======
+            // var formData = new FormData();
+            
+            // formData.append("data", JSON.stringify(data));
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", '/', true);
             // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            
-            console.log(formData);
-            xhr.onload = function(){
-                if (xhr.status === 200){
-                    // alert('Good')
-                    resolve();
-                }
-                else {
-                    alert('Request failed')
-                }
-            };
-            xhr.send(formData)
-            // xhr.send(encodeURI('name=' + newName));
-            console.log("HELLO")
-            console.log(this.responseText);
-            // var data = JSON.parse(this.responseText);
-            console.log(data);
-            // return true;   
-            
-        }, 1000)}
-        
+            // xhr.onload = function(){
+            //     if (xhr.status === 200){
+            //         // alert('Good')
+            //         console.log("socket sent");
+            //         resolve();
+            //     }
+            //     else {
+            //         alert('Request failed')
+            //     }
+            // };
+            // xhr.send(formData)
+            // ======= using sockets =========
+            socket.emit('image', {data: JSON.stringify(data)});
+            socket.on( 'my response', function( msg ) {
+                console.log( msg );
+                resolve();
+            })    
+                        
+        }, 200)} // time until get next frame
     })
-    
 };
 function takePics(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript

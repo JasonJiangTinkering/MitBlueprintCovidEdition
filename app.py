@@ -29,16 +29,19 @@ socketio = SocketIO(app, async_mode=async_mode)
 def handle_message(received_data, methods=['GET', 'POST']):
     data = received_data["data"]
     #=== testing input ===
-    # text_file = open("Output.txt", "w+")
-    # text_file.write(data)
-    # text_file.close()
+    text_file = open("Output.txt", "w+")
+    text_file.write(data)
+    text_file.close()
     data = eval(data) 
     x = 0
     for i in data:
         # print("Image" + str(x) + ": " + i)
         throw, throw, i = i.partition(',')
         # data is the base 64 image
-        im = Image.open(BytesIO(base64.b64decode(i)))
+        try:
+            im = Image.open(BytesIO(base64.b64decode(i)))
+        except UnidentifiedImageError:
+            print(i)
         im.save('image' + str(x) + '.png', 'PNG')
         x += 1
     emit('my response', {'data': 'got it!'})

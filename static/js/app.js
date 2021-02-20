@@ -93,12 +93,22 @@ function sendPics(go){
             socket.emit('image', {data: JSON.stringify(data)});
             socket.on( 'my response', function( msg ) {
                 console.log( msg );
+                // set status for each student
+                setstatus(msg);
                 resolve();
             })    
                         
         }, 200)} // time until get next frame
     })
 };
+function setstatus(msg){
+    for (i of msg){ //per user  
+        
+        for(x of i){
+
+        }
+    }
+}
 function takePics(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
     //generate pic URL data

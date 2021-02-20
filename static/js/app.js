@@ -366,32 +366,37 @@ function onChatInputKey(ev) {
     }
 };
 const togglexmute = document.getElementById('toggle-mute');
-togglexmute.on('click', () => {
-    if (this.getAttribute('_go') == 't'){
-        this.setAttribute('_go', 'f');
+// mute
+togglexmute.addEventListener('click', (event) => {
+    if (event.target.getAttribute('_go') == 't'){
+        event.target.setAttribute('_go', 'f');
+        event.target.innerHTML = 'Unmute';
         room.localParticipant.audioTracks.forEach(track => {
-            track.disable();
+            track.track.disable();
           });
     }
     else{
-        this.setAttribute('_go', 't');
+        event.target.setAttribute('_go', 't');
+        event.target.innerHTML = 'Mute';
         room.localParticipant.audioTracks.forEach(track => {
-            track.enable();
+            track.track.enable();
           });
     }
 })
 const togglexvideo = document.getElementById('toggle-video');
-togglexvideo.on('click', () => {
-    if (this.getAttribute('_go') == 't'){
-        this.setAttribute('_go', 'f');
+togglexvideo.addEventListener('click', (event) => {
+    if (event.target.getAttribute('_go') == 't'){
+        event.target.setAttribute('_go', 'f');
+        event.target.innerHTML = 'Start Video';
         room.localParticipant.videoTracks.forEach(track => {
-            track.disable();
+            track.track.disable();
           });
     }
     else{
-        this.setAttribute('_go', 't');
+        event.target.setAttribute('_go', 't');
+        event.target.innerHTML = 'Stop Video';
         room.localParticipant.videoTracks.forEach(track => {
-            track.enable();
+            track.track.enable();
           });
     }
 })

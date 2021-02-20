@@ -104,6 +104,7 @@ function takePics(i){
     //generate pic URL data
 
     var list = document.getElementsByTagName("video")
+    var names = document.getElementsByClassName("label")
     var urlLists = [];
     for (var i=0, max=list.length; i < max; i++) {
         var person = [];
@@ -116,9 +117,10 @@ function takePics(i){
         context.drawImage(list[i], 0, 0, w, h);
         var dataURL = canvas.toDataURL();
         console.log(dataURL);
-        person.push(i)
+        
+        person.push(names[i].innerHTML);
         person.push(dataURL);
-        urlLists.push(person)
+        urlLists.push(person);
       }
     return urlLists
     // fix + test parameters later =============================================

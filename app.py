@@ -39,9 +39,16 @@ def index():
     else:
         return render_template('index.html')
 
-@app.route('/call')
+@app.route('/call', methods = ["POST", "GET"])
 def call():
-    return redirect('/')
+    if request.method == 'POST':
+        return redirect('/thanks')
+    else:
+        return redirect('/')
+
+@app.route('/thanks')
+def thanks():
+    return render_template('thanks.html')
 
 
 @app.route('/login', methods=['POST'])

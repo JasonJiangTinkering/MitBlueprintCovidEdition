@@ -31,19 +31,21 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 def handle_message(received_data, methods=['GET', 'POST']):
     data = received_data["data"]
     #=== testing input ===
-    text_file = open("Output.txt", "w+")
-    text_file.write(data)
-    text_file.close()
+    # text_file = open("Output.txt", "w+")
+    # text_file.write(data)
+    # text_file.close()
     data = eval(data) 
     x = 0
     for i in data:
         # print("Image" + str(x) + ": " + i)
-        throw, throw, i = i.partition(',')
+        person_id = i[0]
+        print(person_id)
+        throw, throw, hold = i[1].partition(',')
         # data is the base 64 image
         try:
-            im = Image.open(BytesIO(base64.b64decode(i)))
+            im = Image.open(BytesIO(base64.b64decode(hold)))
         except UnidentifiedImageError:
-            print(i)
+            print(hold)
         im.save('image' + str(x) + '.png', 'PNG')
         x += 1
     emit('my response', {'data': 'got it!'})

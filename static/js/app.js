@@ -106,6 +106,7 @@ function takePics(i){
     var list = document.getElementsByTagName("video")
     var urlLists = [];
     for (var i=0, max=list.length; i < max; i++) {
+        var person = [];
         w = list[i].videoWidth;
         h = list[i].videoHeight;
         var canvas = document.createElement('canvas');  
@@ -115,8 +116,9 @@ function takePics(i){
         context.drawImage(list[i], 0, 0, w, h);
         var dataURL = canvas.toDataURL();
         console.log(dataURL);
-        urlLists.push(dataURL);
-        
+        person.push(i)
+        person.push(dataURL);
+        urlLists.push(person)
       }
     return urlLists
     // fix + test parameters later =============================================

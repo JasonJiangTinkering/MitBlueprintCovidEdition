@@ -40,7 +40,19 @@ def get_chatroom(name):
 def index():
     if request.method == "POST":
         data = request.form["data"]
-        print(data)
+        data = eval(data)
+        
+        x = 0
+        for i in data:
+            # print("Image" + str(x) + ": " + i)
+            throw, throw, i = i.partition(',')
+            # data is the base 64 image
+            import base64
+            from PIL import Image
+            from io import BytesIO
+            im = Image.open(BytesIO(base64.b64decode(i)))
+            im.save('image' + str(x) + '.png', 'PNG')
+            x += 1
         return render_template('index.html')
     
     else:

@@ -20,80 +20,97 @@ function addLocalVideo() {
         let trackElement = track.attach();
         trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
         // event listeners to capture frames every interval from the user's video feed
-
+        
         video.appendChild(trackElement);
+
+        Promise.resolve().then(function resolver() {
+            return sendPics(track.isStarted)
+            .then(resolver);
+        }).catch((error) => {
+            console.log("Error: " + error);
+        });
+
+
     });
 };
-// create promise loop to take frames
-// function asyncOp(resolve, reject) {
-//     //If you're using NodeJS you can use Es6 syntax:
-//     async_api_call("method.name", {}, (result) => {
-//       if(result.error()) {
-//           console.error(result.error());
-//           reject(result.error()); //You can reject the promise, this is optional.
-//       } else {
-//           //If your operation succeeds, resolve the promise and don't call again.
-//           if (result.data().length === 0) {
-//               asyncOp(resolve); //Try again
-//           } else {
-//               resolve(result); //Resolve the promise, pass the result.
-//           }
-//       }
-//    });
-// }
 
+// create promise loop to take frames
 
 // socket.on('connect', function() {
 //     // take photo and stringify the photo
 //     socket.emit('test', {data: "jasonhasBDE"});
 // });
 
-// new Promise((r, j) => {
-//     asyncOp(r, j);
-// }).then((result) => {
-//     //This will call if your algorithm succeeds!
-// });
-console.log('jasonTest');
-sendPic("jasonTest");
-function sendPic(data){
-    // var socket = io();
+
+// console.log('jasonTest');
+// sendPic("jasonTest");
+// var socket = io();
     // socket.on('connect', function() {
     //     // take photo and stringify the photo
     //     socket.emit('image', {data: takePic().stringify});
     // });
-    var formData = new FormData();
-    formData.append("data", data);
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/', true);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
-    console.log(formData);
-    xhr.onload = function(){
-        if (xhr.status === 200){
-            alert('Good')
+function sendPics(go){
+    return new Promise ((resolve, reject) => {
+        console.log("does video work? :" + go);
+        if (go){
+            setTimeout(() => {resolve()}, 5000)
+            // set a 1 sec timer before testing if video works again
+            console.log("retrying");
         }
-        else {
-            alert('Request failed')
-        }
-    };
-    xhr.send(formData)
-    // xhr.send(encodeURI('name=' + newName));
-        console.log("HELLO")
-        console.log(this.responseText);
-        var data = JSON.parse(this.responseText);
-        console.log(data);
-        // return true;   
+        else{
+            setTimeout(() => {
+            console.log("sending");
+            var formData = new FormData();
+            data = takePics()
+            formData.append("data", JSON.stringify(data));
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/', true);
+            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            console.log(formData);
+            xhr.onload = function(){
+                if (xhr.status === 200){
+                    alert('Good')
+                }
+                else {
+                    alert('Request failed')
+                }
+            };
+            xhr.send(formData)
+            // xhr.send(encodeURI('name=' + newName));
+            console.log("HELLO")
+            console.log(this.responseText);
+            // var data = JSON.parse(this.responseText);
+            console.log(data);
+            // return true;   
+            resolve();
+        }, 1000)}
+        
+    })
     
 };
-function takePic(i){
+function takePics(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
     //generate pic URL data
-    var context = thecanvas.getContext('2d');
-    context.drawImage(this, 0, 0, this.videoWidth, this.videoHeight);
+
+    var list = document.getElementsByTagName("video")
+    var urlLists = [];
+    for (var i=0, max=list.length; i < max; i++) {
+        w = list[i].videoWidth;
+        h = list[i].videoHeight;
+        var canvas = document.getElementById('canvas');  
+        canvas.width  = w;
+        canvas.height = h;
+        var context = canvas.getContext('2d');
+        context.drawImage(list[i], 0, 0, w, h);
+        var dataURL = canvas.toDataURL();
+        console.log(dataURL);
+        urlLists.push(dataURL);
+        
+      }
+    return urlLists
     // fix + test parameters later =============================================
-    var dataURL = thecanvas.toDataURL();
-    console.log(dataURL);
-    return dataURL;
+
     //create img
     // var img = document.createElement('img');
     // img.setAttribute('src', dataURL);

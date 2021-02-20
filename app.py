@@ -36,9 +36,18 @@ def get_chatroom(name):
         friendly_name=name)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    if request.method == "POST":
+        data = request.form["data"]
+        print(data)
+        return render_template('index.html')
+    
+    else:
+        return render_template('index.html')
+    
+    
+    
 
 
 @app.route('/login', methods=['POST'])

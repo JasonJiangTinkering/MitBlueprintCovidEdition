@@ -48,30 +48,42 @@ function addLocalVideo() {
 //     socket.emit('test', {data: "jasonhasBDE"});
 // });
 
-new Promise((r, j) => {
-    asyncOp(r, j);
-}).then((result) => {
-    //This will call if your algorithm succeeds!
-});
+// new Promise((r, j) => {
+//     asyncOp(r, j);
+// }).then((result) => {
+//     //This will call if your algorithm succeeds!
+// });
+console.log('jasonTest');
+sendPic("jasonTest");
 function sendPic(data){
     // var socket = io();
     // socket.on('connect', function() {
     //     // take photo and stringify the photo
     //     socket.emit('image', {data: takePic().stringify});
     // });
-
+    var formData = new FormData();
+    formData.append("data", data);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", '/', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(JSON.stringify({'data' : 'jasontest'}))
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    console.log(formData);
     xhr.onload = function(){
+        if (xhr.status === 200){
+            alert('Good')
+        }
+        else {
+            alert('Request failed')
+        }
+    };
+    xhr.send(formData)
+    // xhr.send(encodeURI('name=' + newName));
         console.log("HELLO")
         console.log(this.responseText);
         var data = JSON.parse(this.responseText);
         console.log(data);
-    }       
-
-    // to @socketio.on('image')
+        // return true;   
+    
 };
 function takePic(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript

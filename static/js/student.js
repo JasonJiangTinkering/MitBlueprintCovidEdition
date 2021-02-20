@@ -85,7 +85,7 @@ function connect(username) {
             room.on('participantDisconnected', participantDisconnected);
             connected = true;
             updateParticipantCount();
-            connectChat(data.token, data.conversation_sid);
+            //connectChat(data.token, data.conversation_sid);
             resolve();
         }).catch(e => {
             console.log(e);

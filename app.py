@@ -34,7 +34,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
     # text_file = open("Output.txt", "w+")
     # text_file.write(data)
     # text_file.close()
-    data = eval(data) 
+    data = eval(data)
     x = 0
     for i in data:
         # print("Image" + str(x) + ": " + i)
@@ -109,4 +109,4 @@ def login():
 
 if __name__ == '__main__':
     # app.run(host='127.0.0.1')
-    socketio.run(app, host='127.0.0.1', port=80)
+    socketio.run(app, host='127.0.0.1', port=5000)

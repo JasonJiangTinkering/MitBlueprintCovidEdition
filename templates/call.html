@@ -39,7 +39,9 @@
                 </form>
                 <div id="root">
                     <div id="container" class="container">
-                        <div id="local" class="participant"><div></div><div class="label">{{username}}</div></div>
+                        <div id="local" class="participant">
+                            <div></div><div class="label">{{username}}</div>
+                        </div>
                         <!-- more participants will be added dynamically here -->
                         <!-- buttons -->
                         <div class="button-controls">
@@ -57,6 +59,8 @@
                     </div>
                 </div>
         </div>
+        <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" crossorigin="anonymous"></script>      
         <script src="https://media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
         <script src="https://media.twiliocdn.com/sdk/js/conversations/releases/1.0.0/twilio-conversations.min.js"></script>

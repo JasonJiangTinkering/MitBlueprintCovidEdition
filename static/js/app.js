@@ -22,10 +22,6 @@ socket.on('connect', function() {
       } )
     })
 
-
-
-
-
 function addLocalVideo() {
     Twilio.Video.createLocalVideoTrack().then(track => {
         let video = document.getElementById('local').firstChild;
@@ -35,6 +31,7 @@ function addLocalVideo() {
 
         video.appendChild(trackElement);
 
+        // setUpCover();
         // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
             console.log("connected: " + connected + "\n teacher: " + teacher);
@@ -47,17 +44,6 @@ function addLocalVideo() {
 
     });
 };
-
-// create promise loop to take frames
-
-// socket.on('connect', function() {
-//     // take photo and stringify the photo
-//     socket.emit('test', {data: "jasonhasBDE"});
-// });
-
-
-// console.log('jasonTest');
-// sendPic("jasonTest");
 
 function sendPics(go){
     return new Promise ((resolve, reject) => {
@@ -365,41 +351,51 @@ function onChatInputKey(ev) {
         chatInput.value = '';
     }
 };
-const togglexmute = document.getElementById('toggle-mute');
-// mute
-togglexmute.addEventListener('click', (event) => {
-    if (event.target.getAttribute('_go') == 't'){
-        event.target.setAttribute('_go', 'f');
-        event.target.innerHTML = 'Unmute';
-        room.localParticipant.audioTracks.forEach(track => {
-            track.track.disable();
-          });
-    }
-    else{
-        event.target.setAttribute('_go', 't');
-        event.target.innerHTML = 'Mute';
-        room.localParticipant.audioTracks.forEach(track => {
-            track.track.enable();
-          });
-    }
-})
-const togglexvideo = document.getElementById('toggle-video');
-togglexvideo.addEventListener('click', (event) => {
-    if (event.target.getAttribute('_go') == 't'){
-        event.target.setAttribute('_go', 'f');
-        event.target.innerHTML = 'Start Video';
-        room.localParticipant.videoTracks.forEach(track => {
-            track.track.disable();
-          });
-    }
-    else{
-        event.target.setAttribute('_go', 't');
-        event.target.innerHTML = 'Stop Video';
-        room.localParticipant.videoTracks.forEach(track => {
-            track.track.enable();
-          });
-    }
-})
+// const togglexmute = document.getElementById('toggle-mute');
+// // mute
+
+
+// togglexmute.addEventListener('click', (event) => {
+//     if (event.target.getAttribute('_go') == 't'){
+//         event.target.setAttribute('_go', 'f');
+//         event.target.innerHTML = 'Unmute';
+//         room.localParticipant.audioTracks.forEach(track => {
+//             track.track.disable();
+//           });
+//     }
+//     else{
+//         event.target.setAttribute('_go', 't');
+//         event.target.innerHTML = 'Mute';
+//         room.localParticipant.audioTracks.forEach(track => {
+//             track.track.enable();
+//           });
+//     }
+// })
+
+// const videoParent = document.getElementById('local');
+// const videoCover = document.getElementById('coverDiv');
+// function setUpCover(){
+//     videoCover.width = videoParent.width
+//     videoCover.height = videoParent.height
+// }
+// const togglexvideo = document.getElementById('toggle-video');
+// togglexvideo.addEventListener('click', (event) => {
+//     if (event.target.getAttribute('_go') == 't'){
+//         event.target.setAttribute('_go', 'f');
+        
+//         event.target.innerHTML = 'Start Video';
+//         room.localParticipant.videoTracks.forEach(track => {
+//             track.track.disable();
+//           });
+//     }
+//     else{
+//         event.target.setAttribute('_go', 't');
+//         event.target.innerHTML = 'Stop Video';
+//         room.localParticipant.videoTracks.forEach(track => {
+//             track.track.enable();
+//           });
+//     }
+// })
 
 addLocalVideo();
 connectButtonHandler();

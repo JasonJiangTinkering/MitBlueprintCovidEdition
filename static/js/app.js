@@ -15,7 +15,8 @@ let chat;
 let conv;
 let screenTrack;
 
-var socket = io.connect('http://' + document.domain + ':' + location.port);
+// var socket = io.connect('https://' + document.domain + ':' + location.port);
+var socket = io();
 socket.on('connect', function() {
     socket.emit( 'my event', {
         data: 'User Connected'
@@ -35,87 +36,82 @@ function addLocalVideo() {
 
         video.appendChild(trackElement);
 
-        // send frames of videos on screen over to the server
-        Promise.resolve().then(function resolver() {
-            //================================================================
-            // teacher = true; // for testing only // get rid of it later
-            //================================================================
-            console.log("connected: " + connected + "\n teacher: " + teacher);
-
-            return sendPics(connected && teacher)
-            .then(resolver);
-        }).catch((error) => {
-            console.log("Error: " + error);
-        });
-
-
+        // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
+        promiseLoop();
     });
 };
+var myerror 
+function promiseLoop(){
+        // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
 
-// create promise loop to take frames
+    Promise.resolve().then(function resolver() {
+        //================================================================
+        // teacher = true; // for testing only // get rid of it later
+        //================================================================
+        console.log("connected: " + connected + "\n teacher: " + teacher);
+        return sendPics(connected && teacher)
+        .then(resolver);
+    }).catch((error) => {
+        console.log("Error: " + error);
+        myerror = error
+    });  
+}
 
-// socket.on('connect', function() {
-//     // take photo and stringify the photo
-//     socket.emit('test', {data: "jasonhasBDE"});
-// });
-
-
-// console.log('jasonTest');
-// sendPic("jasonTest");
 const waitforVideo_Students = 5000;
 const waitBetweenFrames = 200;
+var sendingData;
 function sendPics(go){
     return new Promise ((resolve, reject) => {
         console.log("should send? :" + go);
         if (!go){
             //console.log("retrying");
             setTimeout(() => {resolve()}, waitforVideo_Students)
-            // set a 1 sec timer before testing if video works again
         }
         else{
             setTimeout(() => {
             data = takePics()
-            //  ====== using post request  ======
-            // var formData = new FormData();
-            // formData.append("data", JSON.stringify(data));
-            // var xhr = new XMLHttpRequest();
-            // xhr.open("POST", '/', true);
-            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            // xhr.onload = function(){
-            //     if (xhr.status === 200){
-            //         // alert('Good')
-            //         console.log("socket sent");
-            //         resolve();
-            //     }
-            //     else {
-            //         alert('Request failed')
-            //     }
-            // };
-            // xhr.send(formData)
-            
+            sendingData = data;
             // ======= using sockets =========
             //no students, dont send cheating detector
             if (data.length == 0){setTimeout(() => {resolve()}, waitforVideo_Students)}
             
             else{            
-            socket.emit('image', {data: JSON.stringify(data)});
-            socket.on( 'my response', function( msg ) {
+            var x = "["
+            for (i of data){
+                x += JSON.stringify(i) + ', ';
+            }
+            x += ']';
+            socket.emit('image', {data: x});
+            socket.on('my response', function( msg ) {
+                if (msg['data'] == 'fail'){
+                    reject(); // error has occured
+                }
                 // set status for each student
                 setstatus(msg['data']);
                 resolve();
             })}
 
 
-        }, waitBetweenFrames)} // time until get next frame
+        }, waitBetweenFrames)} 
     })
 };
 function setstatus(msg){
-    console.log(msg.length);
-    for (i of msg){ //per user  
-        labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
-        labeldivs.innerHTML = i.slice(1)
+    try{
+        console.log(msg.length);
+        for (i of msg){ //per user  
+            labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
+            labeldivs.innerHTML = i.slice(1);
+        }
     }
+    catch{
+        // one of the students could have left, no biggie just finish
+        return null;
+    }
+        
 }
+// drawing canvas used to extrace frames
+var canvas = document.createElement('canvas');
+var context = canvas.getContext('2d');
 function takePics(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
     //generate pic URL data
@@ -128,28 +124,22 @@ function takePics(i){
     var urlLists = [];
     // var i = 1, start at 2nd video
     for (var i=1, max=list.length; i < max; i++) {
-        var person = [];
-        w = list[i].videoWidth;
-        h = list[i].videoHeight;
-        var canvas = document.createElement('canvas');
+        let person = [];
+        let w = list[i].videoWidth;
+        let h = list[i].videoHeight;
         canvas.width  = w;
         canvas.height = h;
-        var context = canvas.getContext('2d');
         context.drawImage(list[i], 0, 0, w, h);
-        var dataURL = canvas.toDataURL();
-        // console.log(dataURL);
+        let dataURL = canvas.toDataURL();
+        if (dataURL.length <= 10){ //not a valid 64b format
+            console.log(dataURL);
+            continue;
+        }
         person.push(names[i].innerHTML);
         person.push(dataURL);
         urlLists.push(person);
       }
     return urlLists
-    // fix + test parameters later =============================================
-
-    //create img
-    // var img = document.createElement('img');
-    // img.setAttribute('src', dataURL);
-
-
 }
 function connectButtonHandler(event) {
     event.preventDefault();
@@ -198,14 +188,29 @@ function connect(username) {
     });
     return promise;
 };
-
+// comment out later
+$('#TeacherRestartFrames').hide();
+$("#TeacherTestFrames").hide();
 function updateParticipantCount() {
     if (!connected)
         count.innerHTML = 'Disconnected.';
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0) teacher = true;
+    if (room.participants.size == 0) 
+        {
+            // comment out later
+            let teacherRestartButton = $('#TeacherRestartFrames')
+            teacherRestartButton.show();
+            teacherRestartButton.click(promiseLoop)
+            let teacherSendOneFrame = $("#TeacherTestFrames")
+            teacherSendOneFrame.show();
+            teacherSendOneFrame.click(function(){
+                console.log(takePics(true));
+            })
+            teacher = true;
+        }
+
 };
 
 function participantConnected(participant) {

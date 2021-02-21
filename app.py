@@ -48,9 +48,11 @@ def handle_message(received_data, methods=['GET', 'POST']):
         try:
             im = Image.open(BytesIO(base64.b64decode(hold)))
             mydict[i[0]] = im
-        except UnidentifiedImageError:
-            print('')    	
+        except:
+            print(hold)    	
             #print(hold)
+            emit('my response', {'data': 'fail'})
+            
         ##im.save('image' + str(x) + '.png', 'PNG')
         x += 1
     
@@ -75,6 +77,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
     info = do(mydict,rounds,info,names)
     print(info)
     emit('my response', {'data': info})
+    
     
 
 def get_chatroom(name):

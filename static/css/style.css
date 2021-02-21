@@ -1100,4 +1100,12 @@ input#username  {
     bottom: 185px;
     left: 0;
     width: fit-content;
+    height: fit-content;
+}
+#local > .label{
+    position: absolute;
+    top: 145px;
+    left: 30px;
+    width: fit-content;
+    height: fit-content;
 }

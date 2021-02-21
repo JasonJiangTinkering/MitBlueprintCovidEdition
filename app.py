@@ -61,7 +61,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
     if not("info" in globals()):
     	info = []
     	for x in mydict.keys():
-    		info.append([x,0,0,0,[]])
+    		info.append([x,0,0,0,[],0])
     print(mydict)
     new_names = mydict.keys()
     names=[]
@@ -72,8 +72,11 @@ def handle_message(received_data, methods=['GET', 'POST']):
     		info.remove(x)
     for x in new_names:
     	if not(x in names):
-    		info.append([x,0,0,0,[]])
+    		info.append([x,0,0,0,[],0])
     rounds=0
+    std_dict = {}
+    for x in info:
+    	std_dict[x[0]] = x[5]
     info = do(mydict,rounds,info,names)
     print(info)
     emit('my response', {'data': info})

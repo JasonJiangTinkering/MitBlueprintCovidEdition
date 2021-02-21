@@ -943,6 +943,15 @@ input#username  {
     color: white;
 }
 
+#submit-name{
+    margin-top: 25px;
+    font-size: 20px;
+    background: #0a0c17;
+    border: none;
+    color:white
+}
+
+
 #info-bar{
     width: 100%;
     display: flex;
@@ -954,12 +963,19 @@ input#username  {
     float: right;
 }
 
+#button-bar > button{
+    font-size: 20px;
+    border: none;
+    background: #0a0c17;
+    color:white
+}
+
 #info{
     align-items: flex-start;
 }
 
 #info > p{
-    color: gray;
+    color: white;
     font-size: 17px;
     margin: 0px;
     padding: 1px;
@@ -996,7 +1012,7 @@ input#username  {
 }
 
 .participant .label {
-    background-color: #ddd;
+    background-color: white;
     border-radius: 3px;
     padding-bottom: 7px;
 }
@@ -1033,6 +1049,8 @@ input#username  {
 }
 
 #content{
+    height: 100%;
+    background-color: #0a0c17;
     padding: 30px;
 }
 

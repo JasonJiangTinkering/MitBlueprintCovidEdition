@@ -34,9 +34,9 @@ function addLocalVideo() {
         // event listeners to capture frames every interval from the user's video feed
         video.appendChild(trackElement);
         // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
-        if (!myinstance){
+        // if (!myinstance){
             promiseLoop();
-        }
+        // }
         
     });
 };
@@ -64,7 +64,7 @@ function promiseLoop(){
 const waitforVideo_Students = 5000;
 const waitBetweenFrames = 200;
 var sendingData;
-function sendPics(go, instance){
+function sendPics(go){
 
     return new Promise ((resolve, reject) => {
 
@@ -112,11 +112,22 @@ function setstatus(msg){
             // orange 50 - 75
             // red 75 - 100
             var percent = 100 - Math.round((i[3] / 20) * 100);
-            $("status" + i[0] + " > span.indicator").css("background-color", "white");
+            var color
+            if (0 <= percent < 30){
+                color = "green"
+            }
+            else if(30 <= percent < 50){
+                color = "yellow"
+            }
+            else if(50 <= percent < 70){
+                color = "orange"
+            }
+            else{
+                color = "red"
+            }
+            $("status" + i[0] + " > span.indicator").css("background-color", color);
             // attention rating
-            labeldivs.innerHTML = "attention rating: " + percent + "%" ;
-
-            
+            labeldivs.innerText  = "attention rating: " + percent + "%" ;
             // .slice(1);
         }
     }
@@ -221,11 +232,15 @@ function updateParticipantCount() {
             let teacherRestartButton = $('#TeacherRestartFrames')
             teacherRestartButton.show();
         }
-    if (!myinstance){
-        promiseLoop();
-    }
+    // if (!myinstance){
+    //     promiseLoop();
+    // }
 };
-$('#TeacherRestartFrames').click(promiseLoop)
+// $('#TeacherRestartFrames').click(function(){
+//     if (!myinstance){
+//         promiseLoop();
+//     }
+// })
 function participantConnected(participant) {
     let participantDiv = document.createElement('div');
     participantDiv.setAttribute('id', participant.sid);

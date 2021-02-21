@@ -98,7 +98,8 @@ function setstatus(msg){
         console.log(msg.length);
         for (i of msg){ //per user
             labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
-            labeldivs.innerHTML = i.slice(1);
+            labeldivs.innerHTML = i[4];
+            // .slice(1);
         }
     }
     catch{

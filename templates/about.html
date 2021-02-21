@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+
+<head>
+    <title>Floom | Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="img/favicon.ico" rel="shortcut icon">
+    <!-- Links and CSS Imports -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+
+    <header class="header-section">
+        <div class="logo">
+            <img src="img/logo.png" alt="" width=300>
+        </div>
+        <div class="responsive">
+            <i class="fa fa-bars"></i>
+        </div>
+
+        <ul class="menu-list">
+            <li class="current">
+                <a href="#home">Connect</a>
+            </li>
+            <li class="">
+                <a href="about">About</a>
+            </li>
+        </ul>
+    </header>
+
+    <section class="intro-section fix" id="home">
+        <div class="intro-bg bg-cms"></div>
+        <div class="intro-inner">
+            <div class="intro-content">
+
+                <h2>
+                    <span class="about_thing"></span><span class="typed-cursor">|</span>
+                </h2>
+
+                <p>
+                  <span class="credits"></span><span class="typed-cursor">|</span>
+                </p>
+
+                <br></br>
+
+                <h2 style="font-size: 20px;">
+                  Floom is a video conferencing app designed of teachers.
+                </h2>
+
+                <center>
+                  <div style="width: 60vw;">
+                    <p class="description" style="color: rgb(120,120,120);">
+                      Floom is a video conferencing app with a built-in system for detecting cheating and paying attention. Designed for tests and school presentation, Floom analyzes video feeds to look for behaviors such as switching tabs or windows, and provides a  dashboard for teachers to check which students are on task during presentations, and which students are cheating during tests.
+                    </p>
+                    <p class="description" style="color: rgb(160,160,160); font-size: 15px;">
+                      Floom was designed by Steven Rachmanchik, Jason Jiang, Gabriel Thompson, and Lucas Lee, for MIT Blueprint 2021.
+                    </p>
+                  </div>
+                </center>
+            </div>
+        </div>
+
+
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" crossorigin="anonymous"></script>
+    <script src="https://media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+    <script src="https://media.twiliocdn.com/sdk/js/conversations/releases/1.0.0/twilio-conversations.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

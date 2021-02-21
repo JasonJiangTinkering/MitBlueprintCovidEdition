@@ -195,7 +195,7 @@ function updateParticipantCount() {
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0)
+    if (room.participants.size == 0 || true) // remove after so some children will be teachers 
         {
             username.innerHTML += " (Teacher)";
             // comment out later

@@ -9,6 +9,7 @@ const chatScroll = document.getElementById('chat-scroll');
 const chatContent = document.getElementById('chat-content');
 const chatInput = document.getElementById('chat-input');
 let connected = false;
+let teacher = false;
 let room;
 let chat;
 let conv;
@@ -31,12 +32,13 @@ function addLocalVideo() {
         let trackElement = track.attach();
         trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
         // event listeners to capture frames every interval from the user's video feed
-        
+
         video.appendChild(trackElement);
 
         // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
-            return sendPics(track.isStarted)
+            console.log("connected: " + connected + "\n teacher: " + teacher);
+            return sendPics(connected && teacher)
             .then(resolver);
         }).catch((error) => {
             console.log("Error: " + error);
@@ -59,20 +61,20 @@ function addLocalVideo() {
 
 function sendPics(go){
     return new Promise ((resolve, reject) => {
-        console.log("does video work? :" + go);
+        console.log("should send? :" + go);
         if (!go){
-            console.log("retrying");
+            //console.log("retrying");
             setTimeout(() => {resolve()}, 5000)
             // set a 1 sec timer before testing if video works again
-            
+
         }
         else{
             setTimeout(() => {
-            console.log("sending");
+            //console.log("sending");
             data = takePics()
             //  ====== using post request  ======
             // var formData = new FormData();
-            
+
             // formData.append("data", JSON.stringify(data));
             // var xhr = new XMLHttpRequest();
             // xhr.open("POST", '/', true);
@@ -89,15 +91,15 @@ function sendPics(go){
             // };
             // xhr.send(formData)
             // ======= using sockets =========
-            
+
             socket.emit('image', {data: JSON.stringify(data)});
             socket.on( 'my response', function( msg ) {
                 console.log( msg );
                 // set status for each student
                 setstatus(msg);
                 resolve();
-            })    
-                        
+            })
+
         }, 200)} // time until get next frame
     })
 };
@@ -118,7 +120,7 @@ function takePics(i){
         var person = [];
         w = list[i].videoWidth;
         h = list[i].videoHeight;
-        var canvas = document.createElement('canvas');  
+        var canvas = document.createElement('canvas');
         canvas.width  = w;
         canvas.height = h;
         var context = canvas.getContext('2d');
@@ -192,6 +194,8 @@ function updateParticipantCount() {
         count.innerHTML = 'Disconnected.';
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
+
+    if (room.participants.size == 0) teacher = true;
 };
 
 function participantConnected(participant) {

@@ -9,6 +9,7 @@ from twilio.base.exceptions import TwilioRestException
 import base64
 from PIL import Image
 from io import BytesIO
+from calc import do
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -29,6 +30,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @socketio.on('image')
 def handle_message(received_data, methods=['GET', 'POST']):
+    global info
     data = received_data["data"]
     #=== testing input ===
     # text_file = open("Output.txt", "w+")
@@ -47,10 +49,31 @@ def handle_message(received_data, methods=['GET', 'POST']):
             im = Image.open(BytesIO(base64.b64decode(hold)))
             mydict[i[0]] = im
         except UnidentifiedImageError:
-            print(hold)
-        im.save('image' + str(x) + '.png', 'PNG')
+            print('')    	
+            #print(hold)
+        ##im.save('image' + str(x) + '.png', 'PNG')
         x += 1
     emit('my response', {'data': 'got it!'})
+    
+    
+    if not("info" in globals()):
+    	info = []
+    	for x in mydict.keys():
+    		info.append([x,0,0,0])
+    print(mydict)
+    new_names = mydict.keys()
+    names=[]
+    for y in info:
+    	names.append(y[0])
+    for x in info:
+    	if not(x[0] in new_names):
+    		info.remove(x)
+    for x in new_names:
+    	if not(x in names):
+    		info.append([x,0,0,0])
+    rounds=0
+    info = do(mydict,rounds,info,names)
+    print(info)
 
 def get_chatroom(name):
     for conversation in twilio_client.conversations.conversations.list():
@@ -111,4 +134,4 @@ def login():
 
 if __name__ == '__main__':
     # app.run(host='127.0.0.1')
-    socketio.run(app, host='127.0.0.1', port=80)
+    socketio.run(app, host='127.0.0.1', port=5000)

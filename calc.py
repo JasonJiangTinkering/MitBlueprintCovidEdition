@@ -11,14 +11,14 @@ from mtcnn.mtcnn import MTCNN
 from matplotlib import pyplot
 import os, logging
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-logging.getLogger("tensorflow").setLevel(logging.CRITICAL)
-logging.getLogger("tensorflow_hub").setLevel(logging.CRITICAL)
-import tensorflow as tf
+#os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+#logging.getLogger("tensorflow").setLevel(logging.CRITICAL)
+#logging.getLogger("tensorflow_hub").setLevel(logging.CRITICAL)
+#import tensorflow as tf
 
 
 datapath = 'data/'
-detector = MTCNN()
+#detector = MTCNN()
 def do(newdict,info,names):
     new = []
     for i in range(0, len(info)):
@@ -39,12 +39,12 @@ def do(newdict,info,names):
     	a = 0
     	im = im.convert('RGB')
     	im.save('data/test.jpg')
-    	filename = 'data/test.jpg'
-    	pixels = pyplot.imread('data/test.jpg')
-    	faces = detector.detect_faces(pixels)
-    	z = len(faces)
-    	print(z)
-
+    	#filename = 'data/test.jpg'
+    	#pixels = pyplot.imread('data/test.jpg')
+    	#faces = detector.detect_faces(pixels)
+    	#z = len(faces)
+    	#print(z)
+    	z = 0
     	stat = ImageStat.Stat(im)
     	r,g,b = stat.mean
     	x = math.sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
@@ -53,7 +53,7 @@ def do(newdict,info,names):
     	helperlist.append(x)
     	hl2 = [j-i for i, j in zip(helperlist[:-1], helperlist[1:])]
     	for x in hl2:
-    		if abs(x) > 3.2:
+    		if abs(x) > 0.8:
     			c=c+1
     	y = helperlist[len(helperlist)-1]
     	#if len(hl2) > 1:

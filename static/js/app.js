@@ -115,6 +115,7 @@ function takePics(i){
     //generate pic URL data
     // does not take the teacher's video => assume that because this code
     // is run by teacher, must be the first video
+    // let list  = document.querySelectorAll('div.participant:first-child:last-child');
     var list = document.getElementsByTagName("video")
     var names = document.getElementsByClassName("label")
     // list.shift();

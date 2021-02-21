@@ -32,6 +32,7 @@ def do(newdict,rounds,info,names):
     	helperlist.append(x)
     	if abs(x - y)>2:
     		c+=1
-    	new.append([xz[0],a,c,x,helperlist])
+    	std = statistics.stdev(helperlist)
+    	new.append([xz[0],a,c,x,helperlist,std])
     return(new) # new = [ NAME , 0 , 
 

@@ -129,6 +129,9 @@ def call():
 def thanks():
     return render_template('thanks.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/login', methods=['POST'])
 def login():

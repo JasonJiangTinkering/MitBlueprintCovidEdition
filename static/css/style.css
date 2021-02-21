@@ -1095,3 +1095,9 @@ input#username  {
     display: inline-block;
     
 }
+.label{
+    position: relative;
+    bottom: 185px;
+    left: 0;
+    width: fit-content;
+}

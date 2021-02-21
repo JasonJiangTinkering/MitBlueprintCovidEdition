@@ -48,7 +48,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
         try:
             im = Image.open(BytesIO(base64.b64decode(hold)))
             mydict[i[0]] = im
-        except UnidentifiedImageError:
+        except PIL.UnidentifiedImageError:
             print('')    	
             #print(hold)
         ##im.save('image' + str(x) + '.png', 'PNG')
@@ -59,7 +59,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
     if not("info" in globals()):
     	info = []
     	for x in mydict.keys():
-    		info.append([x,0,0,0])
+    		info.append([x,0,0,0,[]])
     print(mydict)
     new_names = mydict.keys()
     names=[]
@@ -70,7 +70,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
     		info.remove(x)
     for x in new_names:
     	if not(x in names):
-    		info.append([x,0,0,0])
+    		info.append([x,0,0,0,[]])
     rounds=0
     info = do(mydict,rounds,info,names)
     print(info)

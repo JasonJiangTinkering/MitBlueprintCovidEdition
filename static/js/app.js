@@ -195,9 +195,9 @@ function updateParticipantCount() {
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0 || true) // remove after so some children will be teachers 
+    if (room.participants.size == 0 || true) // remove after so some children will be teachers
         {
-            username.innerHTML += " (Teacher)";
+            if(!teacher) username.innerHTML += " (Teacher)";
             // comment out later
             let teacherRestartButton = $('#TeacherRestartFrames')
             teacherRestartButton.show();

@@ -1,6 +1,7 @@
 @import "https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700|Poppins:400,700";
 
 html, body {
+    background-color: #0a0c17;
     height: 100%;
     font-family: montserrat, sans-serif
 }

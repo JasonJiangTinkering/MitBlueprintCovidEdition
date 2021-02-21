@@ -8,6 +8,7 @@ const count = document.getElementById('count');
 const chatScroll = document.getElementById('chat-scroll');
 const chatContent = document.getElementById('chat-content');
 const chatInput = document.getElementById('chat-input');
+
 let connected = false;
 let teacher = false;
 let room;
@@ -31,9 +32,7 @@ function addLocalVideo() {
         let trackElement = track.attach();
         trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
         // event listeners to capture frames every interval from the user's video feed
-
         video.appendChild(trackElement);
-
         // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
         promiseLoop();
     });
@@ -97,8 +96,9 @@ function setstatus(msg){
     try{
         console.log(msg.length);
         for (i of msg){ //per user
+            console.log(i);
             labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
-            labeldivs.innerHTML = i[4];
+            labeldivs.innerHTML = i[3];
             // .slice(1);
         }
     }
@@ -188,7 +188,7 @@ function connect(username) {
     });
     return promise;
 };
-// comment out later
+
 $('#TeacherRestartFrames').hide();
 $("#TeacherTestFrames").hide();
 function updateParticipantCount() {
@@ -200,20 +200,21 @@ function updateParticipantCount() {
     if (room.participants.size == 0 || true) // remove after so some children will be teachers
         {
             if(!teacher) username.innerHTML += " (Teacher)";
-            // comment out later
+            
             let teacherRestartButton = $('#TeacherRestartFrames')
             teacherRestartButton.show();
-            teacherRestartButton.click(promiseLoop)
+
             let teacherSendOneFrame = $("#TeacherTestFrames")
             teacherSendOneFrame.show();
-            teacherSendOneFrame.click(function(){
-                console.log(takePics(true));
-            })
             teacher = true;
         }
 
 };
-
+$('#TeacherRestartFrames').click(promiseLoop)
+$("#TeacherTestFrames").click(function(){
+    breakpoint;
+    console.log(takePics(true));
+})
 function participantConnected(participant) {
     let participantDiv = document.createElement('div');
     participantDiv.setAttribute('id', participant.sid);
@@ -232,6 +233,7 @@ function participantConnected(participant) {
     // build status panel for each extra particpant
     let statusPanel = document.createElement('div');
     statusPanel.setAttribute("id", "status" + participant.identity); //// =========change to SID later
+    statusPanel.setAttribute("class", "status"); 
     participantDiv.appendChild(statusPanel);
 
 

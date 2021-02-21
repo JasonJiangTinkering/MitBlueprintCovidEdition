@@ -930,7 +930,7 @@ element.style {
     }
 }
 
-input {
+input#username  {
     display: block;
     margin: 10px auto;
     border: none;
@@ -940,7 +940,29 @@ input {
     font: 5ch droid sans mono, consolas, monospace;
     letter-spacing: 0.5ch;
 	outline: none;
-    color: dodgerblue;
+    color: white;
+}
+
+#info-bar{
+    width: 100%;
+    display: flex;
+}
+
+#button-bar {
+    margin-left: auto;
+    align-self: flex-start;
+    float: right;
+}
+
+#info{
+    align-items: flex-start;
+}
+
+#info > p{
+    color: gray;
+    font-size: 17px;
+    margin: 0px;
+    padding: 1px;
 }
 
 .container {
@@ -1009,9 +1031,18 @@ input {
     margin-top: 8px;
 }
 
+#content{
+    padding: 30px;
+}
+
+#root{
+    margin-top: 50px;
+}
+
 /* chat section */
 #root.withChat #chat {
     width: calc(100% - 10px);
+    height: 500px;
     display: grid;
     grid-template-rows: auto 30px;
     border-left: 1px solid black;
@@ -1023,6 +1054,7 @@ input {
 }
 
 #chat #chat-scroll {
+    height: calc(100%- 50px);
     overflow: auto;
 }
 

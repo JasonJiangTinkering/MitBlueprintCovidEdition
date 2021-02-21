@@ -9,38 +9,22 @@
         <!-- Links and CSS Imports -->
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/sum.css') }}">
     </head>
     <body>
-        <header class="header-section">
-            <div class="logo">
-                <img src="img/logo.png" alt="" width=300>
-            </div>
-            <div class="responsive">
-                <i class="fa fa-bars"></i>
-            </div>
-
-            <ul class="menu-list">
-                <li class="current">
-                    <a href="#home">Connect</a>
-                </li>
-                <li class="">
-                    <a href="">About</a>
-                </li>
-            </ul>
-        </header>
-        <div>
-                <p id="count">Disconnected.</p>
-                <p id = "username">{{username}}</p>
-                <form action = "/call" method = "POST">
-                    <button id="join_leave" type = "submit">Leave call</button>
-                    <button id="share_screen">Share screen</button>
-                    <button id="toggle_chat">Toggle chat</button>
-                    <div class="button-controls">
+        <div id = "content">
+                <div id="info-bar">
+                    <div id="info">
+                        <p id="count">Disconnected.</p>
+                        <p id = "username">{{username}}</p>
+                    </div>
+                    <form id = "button-bar" action = "/call" method = "POST">
+                        <button id="join_leave" type = "submit">Leave call</button>
+                        <button id="share_screen">Share screen</button>
+                        <button id="toggle_chat">Toggle chat</button>
                         <button _go='t' id="toggle-mute" type="button">Mute</button>
                         <button _go='t' id="toggle-video" type="button">Stop Video</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
                 <div id="root">
                     <div id="container" class="container">
                         <div id="local" class="participant"><div></div><div class="label">Me</div></div>

@@ -37,7 +37,11 @@ function addLocalVideo() {
 
         // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
+            //================================================================
+            teacher = true; // for testing only // get rid of it later
+            //================================================================
             console.log("connected: " + connected + "\n teacher: " + teacher);
+
             return sendPics(connected && teacher)
             .then(resolver);
         }).catch((error) => {
@@ -58,23 +62,21 @@ function addLocalVideo() {
 
 // console.log('jasonTest');
 // sendPic("jasonTest");
-
+const waitforVideo_Students = 5000;
+const waitBetweenFrames = 200;
 function sendPics(go){
     return new Promise ((resolve, reject) => {
         console.log("should send? :" + go);
         if (!go){
             //console.log("retrying");
-            setTimeout(() => {resolve()}, 5000)
+            setTimeout(() => {resolve()}, waitforVideo_Students)
             // set a 1 sec timer before testing if video works again
-
         }
         else{
             setTimeout(() => {
-            //console.log("sending");
             data = takePics()
             //  ====== using post request  ======
             // var formData = new FormData();
-
             // formData.append("data", JSON.stringify(data));
             // var xhr = new XMLHttpRequest();
             // xhr.open("POST", '/', true);
@@ -91,32 +93,40 @@ function sendPics(go){
             // };
             // xhr.send(formData)
             // ======= using sockets =========
-
+            if (data.length == 0){setTimeout(() => {resolve()}, waitforVideo_Students)}
+            else{            
             socket.emit('image', {data: JSON.stringify(data)});
             socket.on( 'my response', function( msg ) {
-                console.log( msg );
+                console.log( msg['data'] );
                 // set status for each student
-                setstatus(msg);
+                setstatus(msg['data']);
                 resolve();
-            })
+            })}
 
-        }, 200)} // time until get next frame
+
+        }, waitBetweenFrames)} // time until get next frame
     })
 };
 function setstatus(msg){
+    
     for (i of msg){ //per user  
-        labeldivs = document.getElementById(i[0])
-        labeldivs.innerHTML = i[1]
+        labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
+        i.shift();
+        labeldivs.innerHTML = i
     }
 }
 function takePics(i){
     // https://stackoverflow.com/questions/19175174/capture-frames-from-video-with-html5-and-javascript
     //generate pic URL data
-
+    // does not take the teacher's video => assume that because this code
+    // is run by teacher, must be the first video
     var list = document.getElementsByTagName("video")
     var names = document.getElementsByClassName("label")
+    // list.shift();
+    // names.shift();
     var urlLists = [];
-    for (var i=0, max=list.length; i < max; i++) {
+    // var i = 1, start at 2nd video
+    for (var i=1, max=list.length; i < max; i++) {
         var person = [];
         w = list[i].videoWidth;
         h = list[i].videoHeight;
@@ -127,7 +137,6 @@ function takePics(i){
         context.drawImage(list[i], 0, 0, w, h);
         var dataURL = canvas.toDataURL();
         // console.log(dataURL);
-        
         person.push(names[i].innerHTML);
         person.push(dataURL);
         urlLists.push(person);
@@ -212,6 +221,12 @@ function participantConnected(participant) {
     participantDiv.appendChild(labelDiv);
 
     container.appendChild(participantDiv);
+
+    // build status panel for each extra particpant
+    let statusPanel = document.createElement('div');
+    statusPanel.setAttribute("id", "status" + participant.identity); //// =========change to SID later
+    participantDiv.appendChild(statusPanel);
+
 
     participant.tracks.forEach(publication => {
         if (publication.isSubscribed)

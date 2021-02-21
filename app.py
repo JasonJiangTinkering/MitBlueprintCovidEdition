@@ -53,7 +53,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
             #print(hold)
         ##im.save('image' + str(x) + '.png', 'PNG')
         x += 1
-    emit('my response', {'data': 'got it!'})
+    
     
     
     if not("info" in globals()):
@@ -74,6 +74,8 @@ def handle_message(received_data, methods=['GET', 'POST']):
     rounds=0
     info = do(mydict,rounds,info,names)
     print(info)
+    emit('my response', {'data': info})
+    
 
 def get_chatroom(name):
     for conversation in twilio_client.conversations.conversations.list():

@@ -33,7 +33,7 @@ def do(newdict,info,names):
     	helperlist.append(x)
     	hl2 = [j-i for i, j in zip(helperlist[:-1], helperlist[1:])]
     	for x in hl2:
-    		if abs(x) > 2.2:
+    		if abs(x) > 2.5:
     			c=c+1
     	y = helperlist[len(helperlist)-1]
     	#if len(hl2) > 1:

@@ -10,6 +10,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 from calc import do
+import numpy as np
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -49,36 +50,36 @@ def handle_message(received_data, methods=['GET', 'POST']):
             im = Image.open(BytesIO(base64.b64decode(hold)))
             mydict[i[0]] = im
         except:
-            print(hold)    	
+            #print(hold)    	
             #print(hold)
             emit('my response', {'data': 'fail'})
             
         ##im.save('image' + str(x) + '.png', 'PNG')
         x += 1
-    
-    
-    
     if not("info" in globals()):
     	info = []
     	for x in mydict.keys():
     		info.append([x,0,[],0])
-    print(mydict)
-    new_names = mydict.keys()
+    #print(mydict)
+    new_names = list(mydict.keys())
     names=[]
-    for y in info:
-    	names.append(y[0])
+    for x in info:
+    	names.append(x[0])
     for x in info:
     	if not(x[0] in new_names):
     		info.remove(x)
     for x in new_names:
     	if not(x in names):
     		info.append([x,0,[],0])
+    		names.append(x)
     rounds=0
     std_dict = {}
     for x in info:
     	std_dict[x[0]] = x[2]
     info = do(mydict,info,names)
-    print(info)
+    names=[]
+    for x in info:
+    	names.append(x[0])
     emit('my response', {'data': info})
     
     

@@ -12,6 +12,17 @@ from io import BytesIO
 from calc import do
 import numpy as np
 
+print(""" 
+___________.__                         
+\_   _____/|  |   ____   ____   _____  
+ |    __)  |  |  /  _ \ /  _ \ /     \ 
+ |     \   |  |_(  <_> |  <_> )  Y Y  \
+
+ \___  /   |____/\____/ \____/|__|_|  /
+     \/                             \/ 
+                                                                                                                   
+Developed By Steven Rakhmanchik, Lucas Lee, Gabriel Thompson, and Jason Jiang in 2021 For MIT Blueprint""")
+
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.

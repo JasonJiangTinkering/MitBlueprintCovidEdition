@@ -16,9 +16,9 @@ from io import BytesIO
 async_mode = None
 
 load_dotenv()
-twilio_account_sid = "AC574e31283298bd9c08801be42875d2a7"
-twilio_api_key_sid = "SKb985afa3d0fbbc7145fad9d41e0ecb74"
-twilio_api_key_secret = "cpSrlUkNhEMYQUfFrqLSrAaatMwWFEcI"
+twilio_account_sid = "AC4dc98f1f07c020cd2c68af5e62b45585"
+twilio_api_key_sid = "SKaa1ab211063155ebded964969b1dd63e"
+twilio_api_key_secret = "KeqE6aDLf9nxBqV5DTgB6AcsscKMcFht"
 twilio_client = Client(twilio_api_key_sid, twilio_api_key_secret,
                        twilio_account_sid)
 
@@ -39,7 +39,7 @@ def handle_message(received_data, methods=['GET', 'POST']):
     mydict = {}
     for i in data:
         # print("Image" + str(x) + ": " + i)
-        
+
         # print(person_id)
         throw, throw, hold = i[1].partition(',')
         # data is the base 64 image
@@ -77,6 +77,19 @@ def index():
 @app.route('/call', methods = ["POST", "GET"])
 def call():
     if request.method == 'POST':
+        d = request.form.to_dict()
+        teacher = d['teacher']
+        sid = d['sid']
+
+        print(teacher)
+        print(sid)
+
+        room = twilio_client.video.rooms(sid)
+        print(room)
+
+        # if room:
+        #     room.update(status='completed')
+
         return redirect('/thanks')
     else:
         return redirect('/')

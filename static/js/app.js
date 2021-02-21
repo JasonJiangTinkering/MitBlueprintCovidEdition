@@ -15,12 +15,12 @@ let chat;
 let conv;
 let screenTrack;
 
-var socket = io.connect('http://' + document.domain + ':' + location.port);
+let socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
     socket.emit( 'my event', {
         data: 'User Connected'
       } )
-    })
+})
 
 
 
@@ -37,7 +37,7 @@ function addLocalVideo() {
 
         // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
-            console.log("connected: " + connected + "\n teacher: " + teacher);
+            //console.log("connected: " + connected + "\n teacher: " + teacher);
             return sendPics(connected && teacher)
             .then(resolver);
         }).catch((error) => {
@@ -48,20 +48,9 @@ function addLocalVideo() {
     });
 };
 
-// create promise loop to take frames
-
-// socket.on('connect', function() {
-//     // take photo and stringify the photo
-//     socket.emit('test', {data: "jasonhasBDE"});
-// });
-
-
-// console.log('jasonTest');
-// sendPic("jasonTest");
-
 function sendPics(go){
     return new Promise ((resolve, reject) => {
-        console.log("should send? :" + go);
+        //console.log("should send? :" + go);
         if (!go){
             //console.log("retrying");
             setTimeout(() => {resolve()}, 5000)
@@ -72,31 +61,12 @@ function sendPics(go){
             setTimeout(() => {
             //console.log("sending");
             data = takePics()
-            //  ====== using post request  ======
-            // var formData = new FormData();
-
-            // formData.append("data", JSON.stringify(data));
-            // var xhr = new XMLHttpRequest();
-            // xhr.open("POST", '/', true);
-            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            // xhr.onload = function(){
-            //     if (xhr.status === 200){
-            //         // alert('Good')
-            //         console.log("socket sent");
-            //         resolve();
-            //     }
-            //     else {
-            //         alert('Request failed')
-            //     }
-            // };
-            // xhr.send(formData)
-            // ======= using sockets =========
 
             socket.emit('image', {data: JSON.stringify(data)});
             socket.on( 'my response', function( msg ) {
-                console.log( msg );
+                //console.log( msg );
                 // set status for each student
-                setstatus(msg);
+                //setstatus(msg);
                 resolve();
             })
 
@@ -104,8 +74,8 @@ function sendPics(go){
     })
 };
 function setstatus(msg){
-    for (i of msg){ //per user  
-        
+    for (i of msg){ //per user
+
         for(x of i){
 
         }
@@ -129,7 +99,7 @@ function takePics(i){
         context.drawImage(list[i], 0, 0, w, h);
         var dataURL = canvas.toDataURL();
         // console.log(dataURL);
-        
+
         person.push(names[i].innerHTML);
         person.push(dataURL);
         urlLists.push(person);
@@ -145,6 +115,7 @@ function takePics(i){
 }
 function connectButtonHandler(event) {
     event.preventDefault();
+    connectButtonHandler();
 }
 function connectButtonHandler(){
     if (!connected) {
@@ -174,11 +145,16 @@ function connect(username) {
             // join video call
             data = _data;
             return Twilio.Video.connect(data.token);
-        }).then(_room => {
+        }).then(_room  => {
             room = _room;
             room.participants.forEach(participantConnected);
+
+            let sid = document.getElementById('sid');
+            sid.setAttribute('value', room.sid);
+
             room.on('participantConnected', participantConnected);
             room.on('participantDisconnected', participantDisconnected);
+
             connected = true;
             updateParticipantCount();
             connectChat(data.token, data.conversation_sid);
@@ -197,8 +173,37 @@ function updateParticipantCount() {
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0) teacher = true;
+    if (room.participants.size == 0) {
+        teacher = true;
+        let form = document.getElementById('teacher');
+        form.setAttribute('value', 'true')
+    }
 };
+
+function checkRoomEnded(){
+    return new Promise ((resolve, reject) => {
+        fetch(`https://video.twilio.com/Rooms/${room.sid}`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .then(_json => {
+            json = _json
+            console.log(json);
+        })
+
+        setTimeout(() => {resolve()}, 500)
+    })
+}
+
+function checkLoop(){
+    Promise.resolve().then(function resolver() {
+        console.log("check room end")
+        return checkRoomEnded()
+        .then(resolver);
+    }).catch((error) => {
+        console.log("Error: " + error);
+    });
+}
 
 function participantConnected(participant) {
     let participantDiv = document.createElement('div');
@@ -223,6 +228,7 @@ function participantConnected(participant) {
     participant.on('trackUnsubscribed', trackUnsubscribed);
 
     updateParticipantCount();
+    checkLoop();
 };
 
 function participantDisconnected(participant) {

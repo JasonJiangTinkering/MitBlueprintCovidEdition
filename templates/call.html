@@ -32,7 +32,9 @@
         <div>
                 <p id="count">Disconnected.</p>
                 <p id = "username">{{username}}</p>
-                <form action = "/call" method = "POST">
+                <form id = "form" action = "/call" method = "POST">
+                    <input id = "teacher" type="hidden" name="teacher" value="false"></input>
+                    <input id = "sid" type="hidden" name="sid"></input>
                     <button id="join_leave" type = "submit">Leave call</button>
                     <button id="share_screen">Share screen</button>
                     <button id="toggle_chat">Toggle chat</button>
@@ -52,7 +54,7 @@
                     </div>
                 </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" crossorigin="anonymous"></script>      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" crossorigin="anonymous"></script>
         <script src="https://media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
         <script src="https://media.twiliocdn.com/sdk/js/conversations/releases/1.0.0/twilio-conversations.min.js"></script>
         <script src="{{ url_for('static', filename='js/app.js') }}"></script>

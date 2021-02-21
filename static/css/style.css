@@ -1086,3 +1086,12 @@ input#username  {
     line-height: 1em;
     max-height: 1px;
 }
+
+.indicator{
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    background-color: aliceblue;
+    display: inline-block;
+    
+}

@@ -196,12 +196,13 @@ function updateParticipantCount() {
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0 || true) // remove after so some children will be teachers
+    if (room.participants.size == 0) // remove after so some children will be teachers
         {
             if(!teacher) username.innerHTML += " (Teacher)";
-            
+
             let teacherRestartButton = $('#TeacherRestartFrames')
             teacherRestartButton.show();
+            teacher = true;
         }
 
 };
@@ -224,7 +225,7 @@ function participantConnected(participant) {
     // build status panel for each extra particpant
     let statusPanel = document.createElement('div');
     statusPanel.setAttribute("id", "status" + participant.identity); //// =========change to SID later
-    statusPanel.setAttribute("class", "status"); 
+    statusPanel.setAttribute("class", "status");
     participantDiv.appendChild(statusPanel);
 
 

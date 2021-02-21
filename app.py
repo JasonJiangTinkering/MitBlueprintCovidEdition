@@ -48,12 +48,14 @@ def handle_message(received_data, methods=['GET', 'POST']):
         try:
             im = Image.open(BytesIO(base64.b64decode(hold)))
             mydict[i[0]] = im
-        except PIL.UnidentifiedImageError:
-            print('')    	
+        except:
+            print(hold)    	
             #print(hold)
+            emit('my response', {'data': 'fail'})
+            
         ##im.save('image' + str(x) + '.png', 'PNG')
         x += 1
-    emit('my response', {'data': 'got it!'})
+    
     
     
     if not("info" in globals()):
@@ -74,6 +76,9 @@ def handle_message(received_data, methods=['GET', 'POST']):
     rounds=0
     info = do(mydict,rounds,info,names)
     print(info)
+    emit('my response', {'data': info})
+    
+    
 
 def get_chatroom(name):
     for conversation in twilio_client.conversations.conversations.list():

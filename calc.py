@@ -13,8 +13,12 @@ datapath = 'data/'
 def do(newdict,info,names):
     new = []
     for i in range(0, len(info)):
+    	
     	xz = info[i]
-    	name = names[i]
+    	try:
+    		name = names[i]
+    	except:
+    		break
     	helperlist = xz[2]
     	im = newdict[xz[0]]
     	c = 0
@@ -29,7 +33,7 @@ def do(newdict,info,names):
     	helperlist.append(x)
     	hl2 = [j-i for i, j in zip(helperlist[:-1], helperlist[1:])]
     	for x in hl2:
-    		if abs(x) > 3.2:
+    		if abs(x) > 2.2:
     			c=c+1
     	y = helperlist[len(helperlist)-1]
     	#if len(hl2) > 1:

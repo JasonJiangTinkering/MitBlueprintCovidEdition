@@ -7,7 +7,7 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
-from mtcnn.mtcnn import MTCNN
+# from mtcnn.mtcnn import MTCNN
 from matplotlib import pyplot
 import os, logging
 

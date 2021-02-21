@@ -106,28 +106,30 @@ function setstatus(msg){
         console.log(msg.length);
         for (i of msg){ //per user
             console.log(i);
-            labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
+            
             // green circle 0 - 30% 
             // yellow circle 30 - 50
             // orange 50 - 75
             // red 75 - 100
             var percent = 100 - Math.round((i[3] / 20) * 100);
             var color
-            if (0 <= percent < 30){
-                color = "green"
-            }
-            else if(30 <= percent < 50){
-                color = "yellow"
-            }
-            else if(50 <= percent < 70){
-                color = "orange"
-            }
-            else{
+            if (0 <= percent && percent < 30){
                 color = "red"
             }
-            $("status" + i[0] + " > span.indicator").css("background-color", color);
+            else if(30 <= percent && percent < 50){
+                color = "orange"
+            }
+            else if(50 <= percent && percent < 70){
+                color = "yellow"
+            }
+            else{
+                color = "green"
+            }
+            //// =========change to SID later
+            $("#status" + i[0] + " > span.indicator").css("background-color", color);
+
             // attention rating
-            labeldivs.innerText  = "attention rating: " + percent + "%" ;
+            $("#status" + i[0] + " > p").text("attention rating: " + percent + "%");
             // .slice(1);
         }
     }
@@ -260,9 +262,13 @@ function participantConnected(participant) {
     let statusPanel = document.createElement('div');
     statusPanel.setAttribute("id", "status" + participant.identity); //// =========change to SID later
     statusPanel.setAttribute("class", "status"); 
+    let percent = document.createElement('p');
+    statusPanel.appendChild(percent);
+
     let indicator = document.createElement('span');
     indicator.setAttribute("class", "indicator"); 
     statusPanel.appendChild(indicator);
+    
     participantDiv.appendChild(statusPanel);
 
 

@@ -42,7 +42,7 @@ $(window).on('load', function() {
         }
     });
     $(".element").typed({
-        strings: ["Welcome To Floom", "Web Conferencing With Real Time Attention Detection", "Start By Entering Your Room Code Below"],
+        strings: ["Welcome To Floom", "Web Conferencing With Real Time Attention Detection", "Start By Entering Your Name Below"],
         typeSpeed: 10,
         loop: true,
         backDelay: 1000

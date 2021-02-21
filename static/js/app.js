@@ -38,7 +38,7 @@ function addLocalVideo() {
         // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
             //================================================================
-            teacher = true; // for testing only // get rid of it later
+            // teacher = true; // for testing only // get rid of it later
             //================================================================
             console.log("connected: " + connected + "\n teacher: " + teacher);
 
@@ -92,12 +92,14 @@ function sendPics(go){
             //     }
             // };
             // xhr.send(formData)
+            
             // ======= using sockets =========
+            //no students, dont send cheating detector
             if (data.length == 0){setTimeout(() => {resolve()}, waitforVideo_Students)}
+            
             else{            
             socket.emit('image', {data: JSON.stringify(data)});
             socket.on( 'my response', function( msg ) {
-                console.log( msg['data'] );
                 // set status for each student
                 setstatus(msg['data']);
                 resolve();
@@ -108,11 +110,10 @@ function sendPics(go){
     })
 };
 function setstatus(msg){
-    
+    console.log(msg.length);
     for (i of msg){ //per user  
         labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
-        i.shift();
-        labeldivs.innerHTML = i
+        labeldivs.innerHTML = i.slice(1)
     }
 }
 function takePics(i){

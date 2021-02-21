@@ -190,7 +190,6 @@ function connect(username) {
 };
 
 $('#TeacherRestartFrames').hide();
-$("#TeacherTestFrames").hide();
 function updateParticipantCount() {
     if (!connected)
         count.innerHTML = 'Disconnected.';
@@ -203,18 +202,10 @@ function updateParticipantCount() {
             
             let teacherRestartButton = $('#TeacherRestartFrames')
             teacherRestartButton.show();
-
-            let teacherSendOneFrame = $("#TeacherTestFrames")
-            teacherSendOneFrame.show();
-            teacher = true;
         }
 
 };
 $('#TeacherRestartFrames').click(promiseLoop)
-$("#TeacherTestFrames").click(function(){
-    breakpoint;
-    console.log(takePics(true));
-})
 function participantConnected(participant) {
     let participantDiv = document.createElement('div');
     participantDiv.setAttribute('id', participant.sid);

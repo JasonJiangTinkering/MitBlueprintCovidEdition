@@ -34,14 +34,19 @@ function addLocalVideo() {
         // event listeners to capture frames every interval from the user's video feed
         video.appendChild(trackElement);
         // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
-        promiseLoop();
+        if (!myinstance){
+            promiseLoop();
+        }
+        
     });
 };
 var myerror
+var myinstance = false;
 function promiseLoop(){
-        // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
-
+    // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
+    myinstance = true;
     Promise.resolve().then(function resolver() {
+
         //================================================================
         // teacher = true; // for testing only // get rid of it later
         //================================================================
@@ -50,15 +55,19 @@ function promiseLoop(){
         .then(resolver);
     }).catch((error) => {
         console.log("Error: " + error);
-        myerror = error
+        myerror = error;
     });
+    myinstance = false;
+
 }
 
 const waitforVideo_Students = 5000;
 const waitBetweenFrames = 200;
 var sendingData;
-function sendPics(go){
+function sendPics(go, instance){
+
     return new Promise ((resolve, reject) => {
+
         console.log("should send? :" + go);
         if (!go){
             //console.log("retrying");
@@ -98,7 +107,16 @@ function setstatus(msg){
         for (i of msg){ //per user
             console.log(i);
             labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
-            labeldivs.innerHTML = i[3];
+            // green circle 0 - 30% 
+            // yellow circle 30 - 50
+            // orange 50 - 75
+            // red 75 - 100
+            var percent = 100 - Math.round((i[3] / 20) * 100);
+            $("status" + i[0] + " > span.indicator").css("background-color", "white");
+            // attention rating
+            labeldivs.innerHTML = "attention rating: " + percent + "%" ;
+
+            
             // .slice(1);
         }
     }
@@ -199,11 +217,13 @@ function updateParticipantCount() {
     if (room.participants.size == 0 || true) // remove after so some children will be teachers
         {
             if(!teacher) username.innerHTML += " (Teacher)";
-            
+            teacher = true;
             let teacherRestartButton = $('#TeacherRestartFrames')
             teacherRestartButton.show();
         }
-
+    if (!myinstance){
+        promiseLoop();
+    }
 };
 $('#TeacherRestartFrames').click(promiseLoop)
 function participantConnected(participant) {
@@ -225,6 +245,9 @@ function participantConnected(participant) {
     let statusPanel = document.createElement('div');
     statusPanel.setAttribute("id", "status" + participant.identity); //// =========change to SID later
     statusPanel.setAttribute("class", "status"); 
+    let indicator = document.createElement('span');
+    indicator.setAttribute("class", "indicator"); 
+    statusPanel.appendChild(indicator);
     participantDiv.appendChild(statusPanel);
 
 

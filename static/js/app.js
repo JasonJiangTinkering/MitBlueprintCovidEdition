@@ -38,7 +38,7 @@ function addLocalVideo() {
         promiseLoop();
     });
 };
-var myerror 
+var myerror
 function promiseLoop(){
         // send frames of videos on screen over to the server //https://stackoverflow.com/questions/39894777/how-to-have-an-async-endless-loop-with-promises
 
@@ -52,7 +52,7 @@ function promiseLoop(){
     }).catch((error) => {
         console.log("Error: " + error);
         myerror = error
-    });  
+    });
 }
 
 const waitforVideo_Students = 5000;
@@ -72,8 +72,8 @@ function sendPics(go){
             // ======= using sockets =========
             //no students, dont send cheating detector
             if (data.length == 0){setTimeout(() => {resolve()}, waitforVideo_Students)}
-            
-            else{            
+
+            else{
             var x = "["
             for (i of data){
                 x += JSON.stringify(i) + ', ';
@@ -90,13 +90,13 @@ function sendPics(go){
             })}
 
 
-        }, waitBetweenFrames)} 
+        }, waitBetweenFrames)}
     })
 };
 function setstatus(msg){
     try{
         console.log(msg.length);
-        for (i of msg){ //per user  
+        for (i of msg){ //per user
             labeldivs = document.getElementById("status" + i[0]);//// =========change to SID later
             labeldivs.innerHTML = i.slice(1);
         }
@@ -105,7 +105,7 @@ function setstatus(msg){
         // one of the students could have left, no biggie just finish
         return null;
     }
-        
+
 }
 // drawing canvas used to extrace frames
 var canvas = document.createElement('canvas');
@@ -195,7 +195,7 @@ function updateParticipantCount() {
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0) 
+    if (room.participants.size == 0)
         {
             username.innerHTML += " (Teacher)";
             // comment out later
@@ -431,7 +431,9 @@ togglexvideo.addEventListener('click', (event) => {
 
 window.onbeforeunload = closingCode;
 function closingCode(){
-    connectButtonHandler();
+    if (connected){
+        connectButtonHandler();
+    }
     return null;
 }
 

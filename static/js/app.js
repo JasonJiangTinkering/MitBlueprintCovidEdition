@@ -22,6 +22,8 @@ socket.on('connect', function() {
       } )
     })
 
+
+
 function addLocalVideo() {
     Twilio.Video.createLocalVideoTrack().then(track => {
         let video = document.getElementById('local').firstChild;
@@ -31,7 +33,6 @@ function addLocalVideo() {
 
         video.appendChild(trackElement);
 
-        // setUpCover();
         // send frames of videos on screen over to the server
         Promise.resolve().then(function resolver() {
             console.log("connected: " + connected + "\n teacher: " + teacher);
@@ -44,6 +45,8 @@ function addLocalVideo() {
 
     });
 };
+
+
 
 function sendPics(go){
     return new Promise ((resolve, reject) => {
@@ -90,10 +93,10 @@ function sendPics(go){
     })
 };
 // function setstatus(msg){
-//     for (i of msg){ //per user  
-        
+//     for (i of msg){ //per user
+
 //         for(x of i){
-         
+
 //         }
 //     }
 // }
@@ -115,7 +118,7 @@ function takePics(i){
         context.drawImage(list[i], 0, 0, w, h);
         var dataURL = canvas.toDataURL();
         // console.log(dataURL);
-        
+
         person.push(names[i].innerHTML);
         person.push(dataURL);
         urlLists.push(person);
@@ -351,51 +354,51 @@ function onChatInputKey(ev) {
         chatInput.value = '';
     }
 };
-// const togglexmute = document.getElementById('toggle-mute');
-// // mute
+const togglexmute = document.getElementById('toggle-mute');
+// mute
 
 
-// togglexmute.addEventListener('click', (event) => {
-//     if (event.target.getAttribute('_go') == 't'){
-//         event.target.setAttribute('_go', 'f');
-//         event.target.innerHTML = 'Unmute';
-//         room.localParticipant.audioTracks.forEach(track => {
-//             track.track.disable();
-//           });
-//     }
-//     else{
-//         event.target.setAttribute('_go', 't');
-//         event.target.innerHTML = 'Mute';
-//         room.localParticipant.audioTracks.forEach(track => {
-//             track.track.enable();
-//           });
-//     }
-// })
+togglexmute.addEventListener('click', (event) => {
+    if (event.target.getAttribute('_go') == 't'){
+        event.target.setAttribute('_go', 'f');
+        event.target.innerHTML = 'Unmute';
+        room.localParticipant.audioTracks.forEach(track => {
+            track.track.disable();
+          });
+    }
+    else{
+        event.target.setAttribute('_go', 't');
+        event.target.innerHTML = 'Mute';
+        room.localParticipant.audioTracks.forEach(track => {
+            track.track.enable();
+          });
+    }
+})
 
-// const videoParent = document.getElementById('local');
-// const videoCover = document.getElementById('coverDiv');
-// function setUpCover(){
-//     videoCover.width = videoParent.width
-//     videoCover.height = videoParent.height
-// }
-// const togglexvideo = document.getElementById('toggle-video');
-// togglexvideo.addEventListener('click', (event) => {
-//     if (event.target.getAttribute('_go') == 't'){
-//         event.target.setAttribute('_go', 'f');
-        
-//         event.target.innerHTML = 'Start Video';
-//         room.localParticipant.videoTracks.forEach(track => {
-//             track.track.disable();
-//           });
-//     }
-//     else{
-//         event.target.setAttribute('_go', 't');
-//         event.target.innerHTML = 'Stop Video';
-//         room.localParticipant.videoTracks.forEach(track => {
-//             track.track.enable();
-//           });
-//     }
-// })
+const videoParent = document.getElementById('local');
+const videoCover = document.getElementById('coverDiv');
+function setUpCover(){
+    videoCover.width = videoParent.width
+    videoCover.height = videoParent.height
+}
+const togglexvideo = document.getElementById('toggle-video');
+togglexvideo.addEventListener('click', (event) => {
+    if (event.target.getAttribute('_go') == 't'){
+        event.target.setAttribute('_go', 'f');
+
+        event.target.innerHTML = 'Start Video';
+        room.localParticipant.videoTracks.forEach(track => {
+            track.track.disable();
+          });
+    }
+    else{
+        event.target.setAttribute('_go', 't');
+        event.target.innerHTML = 'Stop Video';
+        room.localParticipant.videoTracks.forEach(track => {
+            track.track.enable();
+          });
+    }
+})
 
 addLocalVideo();
 connectButtonHandler();
@@ -403,4 +406,3 @@ button.addEventListener('click', connectButtonHandler);
 shareScreen.addEventListener('click', shareScreenHandler);
 toggleChat.addEventListener('click', toggleChatHandler);
 chatInput.addEventListener('keyup', onChatInputKey);
-

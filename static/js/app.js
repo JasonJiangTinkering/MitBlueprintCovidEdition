@@ -186,7 +186,10 @@ function updateParticipantCount() {
     else
         count.innerHTML = (room.participants.size + 1) + ' participants online.';
 
-    if (room.participants.size == 0) teacher = true;
+    if (room.participants.size == 0) {
+        username.innerHTML += " (Teacher)";
+        teacher = true;
+    }
 };
 
 function participantConnected(participant) {
@@ -399,6 +402,12 @@ togglexvideo.addEventListener('click', (event) => {
           });
     }
 })
+
+window.onbeforeunload = closingCode;
+function closingCode(){
+    connectButtonHandler();
+    return null;
+}
 
 addLocalVideo();
 connectButtonHandler();

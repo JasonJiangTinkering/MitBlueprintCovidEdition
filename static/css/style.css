@@ -987,7 +987,7 @@ input#username  {
 
 .participant div video {
     background-color: #eee;
-    border: 1px solid black;
+    border-radius: 3px;
 }
 
 .participant div video:not(.trackZoomed) {
@@ -997,7 +997,8 @@ input#username  {
 
 .participant .label {
     background-color: #ddd;
-    padding: 2px;
+    border-radius: 3px;
+    padding-bottom: 7px;
 }
 
 .participantZoomed {

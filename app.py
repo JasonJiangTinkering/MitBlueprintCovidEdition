@@ -30,6 +30,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @socketio.on('image')
 def handle_message(received_data, methods=['GET', 'POST']):
+    print('new request')
     global info
     data = received_data["data"]
     #=== testing input ===

@@ -1023,7 +1023,9 @@ input#username  {
     height: calc(100% - 5px);
     grid-template-rows: auto 30px;
 }
-
+.status{
+    color: white;
+}
 .participantHidden {
     display: none;
 }
